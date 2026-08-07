@@ -41,6 +41,53 @@
                 </div>
             </header>
 
+            <section class="overview-grid">
+                <article class="overview-card hero-card glass-card">
+                    <div class="overview-copy">
+                        <p class="overview-kicker">Campus snapshot</p>
+                        <h2>Quick overview</h2>
+                        <p>
+                            Key enrollment and activity totals at a glance, so
+                            the dashboard feels like a real control room instead
+                            of a blank shell.
+                        </p>
+                    </div>
+
+                    <div class="overview-primary-metric">
+                        <strong>{{ getStatValue("Total Students") }}</strong>
+                        <span>Total students</span>
+                    </div>
+                </article>
+
+                <article class="overview-card metric-card glass-card">
+                    <p class="overview-kicker">Gender split</p>
+                    <div class="overview-metric-row">
+                        <strong>{{ getStatValue("Male Students") }}</strong>
+                        <span>Male</span>
+                    </div>
+                    <div class="overview-metric-row">
+                        <strong>{{ getStatValue("Female Students") }}</strong>
+                        <span>Female</span>
+                    </div>
+                </article>
+
+                <article class="overview-card metric-card glass-card">
+                    <p class="overview-kicker">Activity</p>
+                    <div class="overview-metric-row">
+                        <strong>{{
+                            getStatValue("New Students This Month")
+                        }}</strong>
+                        <span>New this month</span>
+                    </div>
+                    <div class="overview-metric-row">
+                        <strong>{{
+                            getStatValue("Graduated Students")
+                        }}</strong>
+                        <span>Graduated</span>
+                    </div>
+                </article>
+            </section>
+
             <div class="stats-grid">
                 <article
                     v-for="stat in stats"
@@ -121,12 +168,41 @@
 <script setup>
 import { computed, onMounted, ref, watch } from "vue";
 
-defineProps({
+const props = defineProps({
     stats: {
         type: Array,
         default: () => [],
     },
+    charts: {
+        type: Object,
+        default: () => ({
+            studentsPerCourse: { title: "Students per Course", items: [] },
+            studentsByGender: { title: "Students by Gender", items: [] },
+            studentsPerDepartment: {
+                title: "Students per Department",
+                items: [],
+            },
+        }),
+    },
+    recentStudents: {
+        type: Array,
+        default: () => [],
+    },
+    studentsUrl: {
+        type: String,
+        required: true,
+    },
+    departmentsUrl: {
+        type: String,
+        required: true,
+    },
 });
+
+function getStatValue(label) {
+    const stat = props.stats.find((item) => item.label === label);
+
+    return stat ? stat.value : 0;
+}
 
 function getInitialTheme() {
     const savedTheme = localStorage.getItem("dashboard-theme");
@@ -225,35 +301,17 @@ const DonutChart = {
     },
     setup(props) {
         const colors = [
-            "#2563eb",
-            "#18181b",
-            "#10b981",
-            "#f59e0b",
-            "#8b5cf6",
-            "#06b6d4",
+            "#ef4444",
+            "#b91c1c",
+            "#f97316",
+            "#7f1d1d",
+            "#dc2626",
+            "#fb7185",
         ];
 
         const total = computed(() =>
             props.items.reduce((sum, item) => sum + Number(item.value), 0),
         );
-
-        const gradient = computed(() => {
-            if (!total.value) {
-                return "rgba(113, 113, 122, .18) 0deg 360deg";
-            }
-
-            let current = 0;
-
-            return props.items
-                .map((item, index) => {
-                    const start = current;
-                    const degrees = (Number(item.value) / total.value) * 360;
-                    current += degrees;
-
-                    return `${colors[index % colors.length]} ${start}deg ${current}deg`;
-                })
-                .join(", ");
-        });
 
         function color(index) {
             return colors[index % colors.length];
@@ -269,7 +327,6 @@ const DonutChart = {
 
         return {
             color,
-            gradient,
             percentage,
             total,
         };
@@ -300,4 +357,3 @@ const DonutChart = {
 </script>
 
 <style scoped src="../../css/vue/Dashboard.css"></style>
-
