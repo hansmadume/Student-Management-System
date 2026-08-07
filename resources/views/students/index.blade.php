@@ -18,7 +18,7 @@
             'email' => $student->email,
             'courseName' => optional($student->enrolledCourse)->course_name ?? $student->course,
             'course_id' => $student->course_id,
-            'departmentName' => optional(optional($student->enrolledCourse)->department)->name ?? 'N/A',
+            'departmentName' => optional($student->department)->name ?? optional(optional($student->enrolledCourse)->department)->name ?? 'N/A',
             'gender' => $student->gender,
             'year_level' => $student->year_level,
             'photoUrl' => $student->photo ? asset('storage/' . $student->photo) : null,

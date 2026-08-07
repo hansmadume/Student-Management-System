@@ -12,7 +12,15 @@
         return [
             'id' => $course->id,
             'course_name' => $course->course_name,
+            'department_id' => $course->department_id,
             'department_name' => optional($course->department)->name,
+        ];
+    });
+
+    $departmentRows = $departments->map(function ($department) {
+        return [
+            'id' => $department->id,
+            'name' => $department->name,
         ];
     });
 
@@ -24,6 +32,7 @@
         'gender' => old('gender', ''),
         'email' => old('email', ''),
         'phone' => old('phone', ''),
+        'department_id' => old('department_id', ''),
         'course_id' => old('course_id', ''),
         'course' => old('course', ''),
         'year_level' => old('year_level', ''),
@@ -38,6 +47,7 @@
         'cancelUrl' => route('students.index'),
         'csrf' => csrf_token(),
         'student' => $studentData,
+        'departments' => $departmentRows,
         'courses' => $courseRows,
         'errors' => $errors->all(),
     ];

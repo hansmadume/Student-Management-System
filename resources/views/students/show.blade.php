@@ -18,7 +18,7 @@
             'email' => $student->email,
             'phone' => $student->phone,
             'courseName' => optional($student->enrolledCourse)->course_name ?? $student->course,
-            'departmentName' => optional(optional($student->enrolledCourse)->department)->name ?? 'N/A',
+            'departmentName' => optional($student->department)->name ?? optional(optional($student->enrolledCourse)->department)->name ?? 'N/A',
             'year_level' => $student->year_level,
             'photoUrl' => $student->photo ? asset('storage/' . $student->photo) : null,
             'editUrl' => route('students.edit', $student),

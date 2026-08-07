@@ -18,6 +18,7 @@ class Student extends Model
         'gender',
         'email',
         'phone',
+        'department_id',
         'course',
         'course_id',
         'year_level',
@@ -27,6 +28,11 @@ class Student extends Model
     protected $casts = [
         'birthday' => 'date',
     ];
+
+    public function department(): BelongsTo
+    {
+        return $this->belongsTo(Department::class);
+    }
 
     public function enrolledCourse(): BelongsTo
     {

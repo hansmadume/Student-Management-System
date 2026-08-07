@@ -62,10 +62,20 @@
                     </label>
 
                     <label>
+                        <span>Department</span>
+                        <select v-model="form.department_id" name="department_id" required>
+                            <option value="">Select department</option>
+                            <option v-for="department in departments" :key="department.id" :value="department.id">
+                                {{ department.name }}
+                            </option>
+                        </select>
+                    </label>
+
+                    <label>
                         <span>Course Relationship</span>
                         <select v-model="form.course_id" name="course_id">
                             <option value="">No course relationship yet</option>
-                            <option v-for="course in courses" :key="course.id" :value="course.id">
+                            <option v-for="course in filteredCourses" :key="course.id" :value="course.id">
                                 {{ course.course_name }}<template v-if="course.department_name"> - {{ course.department_name }}</template>
                             </option>
                         </select>
@@ -106,7 +116,7 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue';
+import { computed, reactive, ref, watch } from 'vue';
 
 const props = defineProps({
     title: {
@@ -137,6 +147,10 @@ const props = defineProps({
         type: Object,
         default: () => ({}),
     },
+    departments: {
+        type: Array,
+        default: () => [],
+    },
     courses: {
         type: Array,
         default: () => [],
@@ -155,12 +169,46 @@ const form = reactive({
     gender: props.student.gender || '',
     email: props.student.email || '',
     phone: props.student.phone || '',
+    department_id: props.student.department_id || '',
     course_id: props.student.course_id || '',
     course: props.student.course || '',
     year_level: props.student.year_level || '',
 });
 
 const previewUrl = ref(props.student.photoUrl || '');
+
+const filteredCourses = computed(() => {
+    if (!form.department_id) {
+        return props.courses;
+    }
+
+    return props.courses.filter((course) => String(course.department_id) === String(form.department_id));
+});
+
+watch(() => form.department_id, () => {
+    const selectedCourse = props.courses.find((course) => String(course.id) === String(form.course_id));
+
+    if (selectedCourse && String(selectedCourse.department_id) !== String(form.department_id)) {
+        form.course_id = '';
+    }
+
+    const selectedDepartment = props.departments.find((department) => String(department.id) === String(form.department_id));
+
+    if (selectedDepartment && !form.course) {
+        form.course = selectedDepartment.name;
+    }
+});
+
+watch(() => form.course_id, () => {
+    const selectedCourse = props.courses.find((course) => String(course.id) === String(form.course_id));
+
+    if (!selectedCourse) {
+        return;
+    }
+
+    form.department_id = selectedCourse.department_id || form.department_id;
+    form.course = selectedCourse.course_name || form.course;
+});
 
 function previewPhoto(event) {
     const [file] = event.target.files;

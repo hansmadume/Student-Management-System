@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\Department;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -50,9 +51,12 @@ class StudentController extends Controller
      */
     public function create()
     {
+        $departments = Department::with(['courses' => function ($query) {
+            $query->orderBy('course_name');
+        }])->orderBy('name')->get();
         $courses = Course::with('department')->orderBy('course_name')->get();
 
-        return view('students.create', compact('courses'));
+        return view('students.create', compact('courses', 'departments'));
     }
 
     /**
@@ -68,6 +72,7 @@ class StudentController extends Controller
             'gender' => 'required',
             'email' => 'required|email|unique:students',
             'phone' => 'required',
+            'department_id' => 'required|exists:departments,id',
             'course' => 'required',
             'course_id' => 'nullable|exists:courses,id',
             'year_level' => 'required',
@@ -89,7 +94,7 @@ class StudentController extends Controller
      */
     public function show(Student $student)
     {
-        $student->load('enrolledCourse.department');
+        $student->load(['department', 'enrolledCourse.department']);
 
         return view('students.show', compact('student'));
     }
@@ -99,9 +104,12 @@ class StudentController extends Controller
      */
     public function edit(Student $student)
     {
+        $departments = Department::with(['courses' => function ($query) {
+            $query->orderBy('course_name');
+        }])->orderBy('name')->get();
         $courses = Course::with('department')->orderBy('course_name')->get();
 
-        return view('students.edit', compact('student', 'courses'));
+        return view('students.edit', compact('student', 'courses', 'departments'));
     }
 
     /**
@@ -117,6 +125,7 @@ class StudentController extends Controller
             'gender' => 'required',
             'email' => 'required|email|unique:students,email,' . $student->id,
             'phone' => 'required',
+            'department_id' => 'required|exists:departments,id',
             'course' => 'required',
             'course_id' => 'nullable|exists:courses,id',
             'year_level' => 'required',
@@ -179,7 +188,7 @@ class StudentController extends Controller
 
     private function studentQuery(Request $request, bool $trashed = false)
     {
-        $query = Student::with('enrolledCourse.department');
+        $query = Student::with(['department', 'enrolledCourse.department']);
 
         if ($trashed) {
             $query->onlyTrashed();
