@@ -1,0 +1,135 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+    transition: background-color 240ms ease, color 240ms ease;
+}
+
+.app-shell {
+    background:
+        radial-gradient(circle at 12% 4%, rgba(37, 99, 235, 0.10), transparent 30%),
+        radial-gradient(circle at 88% 0%, rgba(59, 130, 246, 0.08), transparent 28%),
+        #ffffff;
+    color: #18181b;
+    transition: background-color 240ms ease, color 240ms ease;
+}
+
+.app-page-header {
+    background: rgba(250, 250, 250, 0.86);
+    border-bottom: 1px solid rgba(24, 24, 27, 0.10);
+    box-shadow: 0 14px 40px rgba(24, 24, 27, 0.08);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+}
+
+.app-page-header h2 {
+    color: #18181b;
+}
+
+html.dashboard-dark,
+html.dashboard-dark body {
+    background: #09090b;
+    color: #fafafa;
+}
+
+html.dashboard-dark .app-shell,
+html.dashboard-dark .min-h-screen.bg-gray-100 {
+    background:
+        radial-gradient(circle at 12% 4%, rgba(59, 130, 246, 0.14), transparent 30%),
+        radial-gradient(circle at 88% 0%, rgba(59, 130, 246, 0.10), transparent 28%),
+        #09090b !important;
+    color: #fafafa;
+}
+
+html.dashboard-dark .app-page-header {
+    background: rgba(24, 24, 27, 0.82) !important;
+    border-color: rgba(250, 250, 250, 0.10) !important;
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.28) !important;
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+}
+
+html.dashboard-dark .app-page-header h2 {
+    color: #fafafa !important;
+}
+
+html.dashboard-dark header.bg-white {
+    background: rgba(24, 24, 27, 0.82) !important;
+    border-color: rgba(250, 250, 250, 0.1) !important;
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.28) !important;
+    backdrop-filter: blur(18px);
+}
+
+html.dashboard-dark header h2,
+html.dashboard-dark .text-gray-800 {
+    color: #fafafa !important;
+}
+
+html.dashboard-dark nav {
+    background: rgba(9, 9, 11, 0.82) !important;
+    border-color: rgba(250, 250, 250, 0.1) !important;
+    box-shadow: 0 14px 42px rgba(0, 0, 0, 0.34) !important;
+}
+
+html.dashboard-dark nav .bg-white,
+html.dashboard-dark nav .bg-zinc-50,
+html.dashboard-dark nav .bg-zinc-50\/80,
+html.dashboard-dark nav .bg-white\/95 {
+    background-color: rgba(24, 24, 27, 0.72) !important;
+}
+
+html.dashboard-dark nav .border-zinc-200,
+html.dashboard-dark nav .border-zinc-200\/70,
+html.dashboard-dark nav .ring-zinc-200 {
+    border-color: rgba(250, 250, 250, 0.1) !important;
+    --tw-ring-color: rgba(250, 250, 250, 0.1) !important;
+}
+
+html.dashboard-dark nav .text-zinc-950,
+html.dashboard-dark nav .text-zinc-700,
+html.dashboard-dark nav .text-zinc-600,
+html.dashboard-dark nav .hover\:text-zinc-950:hover {
+    color: #fafafa !important;
+}
+
+html.dashboard-dark nav .text-zinc-500,
+html.dashboard-dark nav .text-zinc-400 {
+    color: #a1a1aa !important;
+}
+
+html.dashboard-dark nav .shadow-zinc-950\/5,
+html.dashboard-dark nav .shadow-zinc-950\/15 {
+    --tw-shadow-color: rgba(0, 0, 0, 0.35) !important;
+}
+
+html.dashboard-dark nav .hover\:bg-zinc-50:hover,
+html.dashboard-dark nav .hover\:bg-blue-50:hover {
+    background-color: rgba(39, 39, 42, 0.86) !important;
+}
+
+html.dashboard-dark nav .bg-blue-50 {
+    background-color: rgba(37, 99, 235, 0.18) !important;
+}
+
+html.dashboard-dark nav .text-blue-700,
+html.dashboard-dark nav .hover\:text-blue-600:hover {
+    color: #93c5fd !important;
+}
+
+html.dashboard-dark nav .ring-blue-100 {
+    --tw-ring-color: rgba(59, 130, 246, 0.24) !important;
+}
+
+html.dashboard-dark nav [role="menu"],
+html.dashboard-dark nav .ring-black {
+    background-color: #18181b !important;
+    border-color: rgba(250, 250, 250, 0.1) !important;
+    --tw-ring-color: rgba(250, 250, 250, 0.1) !important;
+}
+
+html.dashboard-dark nav a:hover,
+html.dashboard-dark nav button:hover {
+    border-color: rgba(59, 130, 246, 0.35) !important;
+}
